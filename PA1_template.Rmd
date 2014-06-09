@@ -1,16 +1,34 @@
 # Reproducible Research: Peer Assessment 1
 
+# Loading required packages
+```{r Load Packages, echo=TRUE, results='hide', message=FALSE}
+require(ggplot2)
+```
 
 ## Loading and preprocessing the data
-
-
+```{r Load Data,echo=TRUE, cache=TRUE}
+setwd("/Users/sharannarang/Desktop/R projects/Reproducible Research/RepData_PeerAssessment1/")
+unzip(zipfile="activity.zip")
+activity <- read.csv("activity.csv")
+```
 
 ## What is mean total number of steps taken per day?
+In order to compute the total number of steps per day, I have created a new data frame (activity.na) and replaced the NA values with 0. 
+```{r Total Steps/day, echo=TRUE, cache=FALSE, message=FALSE}
+activity.na <- activity
+activity.na[is.na(activity)] <- 0
+total.steps <- tapply(activity.na$steps, activity.na$date, sum)
+qplot(total.steps, main="Total Steps/day", xlab="Total steps") + scale_y_discrete(breaks=seq(0,12,by=2))
+```
 
+```{r Mean Total/Day}
+mean.total <- mean(total.steps)
+median.total <- median(total.steps)
+```
 
+The average total steps taken per day is `r mean.total`. The median total steps per day is `r median.total`.
 
 ## What is the average daily activity pattern?
-
 
 
 ## Imputing missing values
