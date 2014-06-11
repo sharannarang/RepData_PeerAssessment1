@@ -1,8 +1,9 @@
 # Reproducible Research: Peer Assessment 1
 
-# Loading required packages
+### Loading required packages
 ```{r Load Packages, echo=TRUE, results='hide', message=FALSE}
 require(ggplot2)
+require(reshape2)
 ```
 
 ## Loading and preprocessing the data
@@ -10,10 +11,13 @@ require(ggplot2)
 setwd("/Users/sharannarang/Desktop/R projects/Reproducible Research/RepData_PeerAssessment1/")
 unzip(zipfile="activity.zip")
 activity <- read.csv("activity.csv")
+activity$date.time <- strptime(paste(activity$date, formatC(activity$interval, width=4, flag=0)), format="%Y-%m-%d %H%M")
 ```
 
 ## What is mean total number of steps taken per day?
+
 In order to compute the total number of steps per day, I have created a new data frame (activity.na) and replaced the NA values with 0. 
+
 ```{r Total Steps/day, echo=TRUE, cache=FALSE, message=FALSE}
 activity.na <- activity
 activity.na[is.na(activity)] <- 0
@@ -30,6 +34,19 @@ The average total steps taken per day is `r mean.total`. The median total steps 
 
 ## What is the average daily activity pattern?
 
+In order to get average daily activity pattern, the data frame is melted with steps as the variable and then cast back to compute the mean steps per interval. 
+
+```{r Mean/Interval}
+activity.melt <- melt(activity.na, measure.vars=c("steps"))
+activity.cast <- dcast(activity.melt, interval~variable,mean)
+qplot(data=activity.cast, x=interval, y=steps, geom="line") + ylab("Average Number of Steps")
+```
+
+```{r Max interval}
+max.interval <- activity.cast[activity.cast$steps==max(activity.cast$steps),1]
+```
+
+The time interval between `r max.interval-5` and `r max.interval` contains the maximum number of steps on average. 
 
 ## Imputing missing values
 
