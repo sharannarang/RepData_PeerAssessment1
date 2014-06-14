@@ -1,5 +1,7 @@
 # Reproducible Research: Peer Assessment 1
 
+## Loading and preprocessing the data
+
 ### Loading required packages
 
 ```r
@@ -7,7 +9,6 @@ require(ggplot2)
 require(reshape2)
 ```
 
-## Loading and preprocessing the data
 The activity data set is loaded by unzipping the activity.zip file present in the working directory. In order to work with date and times, a new column is added to the activity data frame which combines the date and time interval. 
 
 
@@ -71,9 +72,10 @@ To calculate the total NA values, the is.na function is useful.
 
 ```r
 na.values <- sum(is.na(activity$steps))
+days <- na.values/(12*24)
 ```
 
-The total number of missing values in the acitivity dataset are **2304**.
+The total number of missing values in the acitivity dataset are **2304**. This is equivalent to **8 days** of data. 
 
 In order to impute missing values, the mean value of 5 minute interval accross all days is used. The mean value for all intervals was calculated and saved in the acitivity.cast dataframe. For example, if an value for interval 07:55 to 08:00 is missing, it will be imputed using the value for 08:00 from the activity.cast data frame. 
 
@@ -104,6 +106,8 @@ median.total.imputed <- median(total.steps.imputed)
 ```
 
 The mean total steps per day after imputing mising values is 1.0766 &times; 10<sup>4</sup>. The median total steps per day after imputing missing values is  1.0766 &times; 10<sup>4</sup>.
+
+The mean is unchanged from the first part of the assignment. Since the NA values are replaced by the means of each 5 minute interval, they don't impact the mean of total steps per day. The median is now equal to the mean since the imputed observations were equal to the means of the individual intervals. 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 

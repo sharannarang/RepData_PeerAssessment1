@@ -181,13 +181,13 @@ hljs.initHighlightingOnLoad();
 <body>
 <h1>Reproducible Research: Peer Assessment 1</h1>
 
+<h2>Loading and preprocessing the data</h2>
+
 <h3>Loading required packages</h3>
 
 <pre><code class="r">require(ggplot2)
 require(reshape2)
 </code></pre>
-
-<h2>Loading and preprocessing the data</h2>
 
 <p>The activity data set is loaded by unzipping the activity.zip file present in the working directory. In order to work with date and times, a new column is added to the activity data frame which combines the date and time interval. </p>
 
@@ -239,9 +239,10 @@ end.time &lt;-strftime(strptime(formatC(max.interval, width=4, flag=0), format=&
 <p>To calculate the total NA values, the is.na function is useful.</p>
 
 <pre><code class="r">na.values &lt;- sum(is.na(activity$steps))
+days &lt;- na.values/(12*24)
 </code></pre>
 
-<p>The total number of missing values in the acitivity dataset are <strong>2304</strong>.</p>
+<p>The total number of missing values in the acitivity dataset are <strong>2304</strong>. This is equivalent to <strong>8 days</strong> of data. </p>
 
 <p>In order to impute missing values, the mean value of 5 minute interval accross all days is used. The mean value for all intervals was calculated and saved in the acitivity.cast dataframe. For example, if an value for interval 07:55 to 08:00 is missing, it will be imputed using the value for 08:00 from the activity.cast data frame. </p>
 
@@ -266,6 +267,8 @@ median.total.imputed &lt;- median(total.steps.imputed)
 </code></pre>
 
 <p>The mean total steps per day after imputing mising values is 1.0766 &times; 10<sup>4</sup>. The median total steps per day after imputing missing values is  1.0766 &times; 10<sup>4</sup>.</p>
+
+<p>The mean is unchanged from the first part of the assignment. Since the NA values are replaced by the means of each 5 minute interval, they don&#39;t impact the mean of total steps per day. The median is now equal to the mean since the imputed observations were equal to the means of the individual intervals. </p>
 
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
 
